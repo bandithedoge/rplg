@@ -1,7 +1,7 @@
-import json, repology, strformat
+import json, repology, strformat, strutils
 
-proc info(pkgName: string = "awesome"): int =
-  for package in getApi("project", pkgName):
+proc info(pkgName: seq[string]): int =
+  for package in getApi("project", pkgName.join()):
     var repo, name: string
 
     repo = getStr(package["repo"])
