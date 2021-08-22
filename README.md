@@ -38,7 +38,7 @@ nimble release
 
 # TODO
 
-- [ ] Move API response handling to separate function
+- [x] Move API response handling to separate function
 - [ ] Install command
 - [ ] Nicer output
     - [ ] Group by repo
