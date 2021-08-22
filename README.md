@@ -6,8 +6,8 @@ Heavily WIP CLI browser for repology.org. Currently only outputs a list of repos
 Usage:
   rplg {SUBCMD}  [sub-command options & parameters]
 where {SUBCMD} is one of:
-  help  print comprehensive or per-cmd help
-  info  
+  help     print comprehensive or per-cmd help
+  project  
 
 rplg {-h|--help} or with no args at all prints this message.
 rplg --help-syntax gives general cligen syntax help.
