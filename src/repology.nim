@@ -2,8 +2,10 @@ import puppy, json, strformat, strutils
 
 type Project* = object
   repo*: string
+  subrepo*: string
   name*: string
   version*: string
+  status*: string
 
 const api = "https://repology.org/api/v1"
 var apiString: string
@@ -20,10 +22,8 @@ proc getProject*(arg: string): seq[Project] =
 
     packageResponse.repo= getStr(package["repo"])
     packageResponse.version = getStr(package["version"])
-
-    if package{"subrepo"} != nil:
-      packageResponse.repo.add('/')
-      packageResponse.repo.add(getStr(package["subrepo"]))
+    packageResponse.status = getStr(package["status"])
+    packageResponse.subrepo = getStr(package{"subrepo"})
 
     if package{"srcname"} != nil:
       packageResponse.name = getStr(package["srcname"])
