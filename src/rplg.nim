@@ -2,9 +2,9 @@ import repology, strformat, strutils, terminal
 
 proc project(pkgList: seq[string]): void =
   for pkg in pkgList:
-    stdout.styledWrite(styleUnderscore, &"{pkg}:")
+    stdout.styledWrite(styleUnderscore, &"{pkg}:\n")
     for project in getProject(pkg).packages:
-      stdout.write("\n\t")
+      stdout.write("\t")
       stdout.styledWrite(styleBright, project.repo)
       if project.subrepo != "":
         stdout.styledWrite(styleDim, &"/{project.subrepo}")
@@ -43,14 +43,16 @@ proc project(pkgList: seq[string]): void =
       stdout.styledWrite(versionStyle, versionColor, &" ({project.version})")
       if project.status == vulnerable:
         stdout.styledWrite(styleBright, fgRed, "!")
+      stdout.write("\n")
 
 proc search(pkgList:seq[string]): void =
   for pkg in pkgList:
-    stdout.styledWrite(styleUnderscore, &"Search results for \"{pkg}\":")
+    stdout.styledWrite(styleUnderscore, &"Search results for \"{pkg}\":\n")
     for project in getProjects(pkg):
-      stdout.write("\n\t")
+      stdout.write("\t")
       stdout.styledWrite(styleBright, &"{project.name}: ")
       stdout.write(project.packages.len())
+      stdout.write("\n")
 
 import cligen
 dispatchMulti([project, help = { "pkgList": "List of packages", }],
