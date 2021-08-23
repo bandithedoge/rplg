@@ -41,7 +41,7 @@ proc parseProject(arg: JsonNode): Project =
     case packageResponse.repo
     of "winget":
       packageResponse.name = replace(packageResponse.name, "/", ".")
-    of "wikidata":
+    of "wikidata", "distrowatch":
       continue
 
     packageResponseFinal.packages.add(packageResponse)
