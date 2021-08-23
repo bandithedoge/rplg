@@ -1,9 +1,9 @@
 import repology, strformat, strutils, terminal
 
-proc project(pkgList: seq[string]): int =
+proc project(pkgList: seq[string]): void =
   for pkg in pkgList:
     stdout.styledWrite(styleUnderscore, &"{pkg}:")
-    for project in getProject(pkg):
+    for project in getProject(pkg).packages:
       stdout.write("\n\t")
       stdout.styledWrite(styleBright, project.repo)
       if project.subrepo != "":
@@ -14,35 +14,45 @@ proc project(pkgList: seq[string]): int =
       var versionStyle: Style
 
       case project.status
-      of "newest":
+      of newest:
         versionColor = fgGreen
-      of "devel":
+      of devel:
         versionColor = fgCyan
-      of "unique":
+      of unique:
         versionColor = fgBlue
-      of "outdated":
+      of outdated:
         versionColor = fgRed
-      of "legacy":
+      of legacy:
         versionColor = fgYellow
         versionStyle = styleBright
-      of "rolling":
+      of rolling:
         versionColor = fgWhite
         versionStyle = styleBright
-      of "noscheme":
+      of noscheme:
         versionColor = fgMagenta
-      of "incorrect":
+      of incorrect:
         versionColor = fgYellow
-      of "untrusted":
+      of untrusted:
         versionStyle = styleDim
-      of "ignored":
+      of ignored:
         versionStyle = styleStrikethrough
-      of "vulnerable":
+      of vulnerable:
         versionColor = fgGreen
         versionStyle = styleBright
 
       stdout.styledWrite(versionStyle, versionColor, &" ({project.version})")
-      if project.status == "vulnerable":
-        stdout.styledWrite(styleUnderscore, fgRed, "!")
+      if project.status == vulnerable:
+        stdout.styledWrite(styleBright, fgRed, "!")
+
+proc search(pkgList:seq[string]): void =
+  for pkg in pkgList:
+    stdout.styledWrite(styleUnderscore, &"Search results for \"{pkg}\":")
+    for project in getProjects(pkg):
+      stdout.write("\n\t")
+      stdout.styledWrite(styleBright, &"{project.name}: ")
+      stdout.write(project.packages.len())
 
 import cligen
-dispatchMulti([project, help = { "pkgList": "List of packages" }])
+dispatchMulti([project, help = { "pkgList": "List of packages", }],
+              [search]
+              )
