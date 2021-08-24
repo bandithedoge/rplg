@@ -1,4 +1,5 @@
-import repology, strformat, strutils, terminal
+import repology, strformat, strutils, terminal, os, osproc
+
 
 proc project(pkgList: seq[string]): void =
   for pkg in pkgList:
@@ -45,7 +46,7 @@ proc project(pkgList: seq[string]): void =
         stdout.styledWrite(styleBright, fgRed, "!")
       stdout.write("\n")
 
-proc search(pkgList:seq[string]): void =
+proc search(pkgList: seq[string]): void =
   for pkg in pkgList:
     stdout.styledWrite(styleUnderscore, &"Search results for \"{pkg}\":\n")
     for project in getProjects(pkg):
@@ -54,7 +55,21 @@ proc search(pkgList:seq[string]): void =
       stdout.write(project.packages.len())
       stdout.write("\n")
 
+import parsecfg
+
+proc install(pkgList: seq[string]): void =
+  let config = loadConfig(os.getConfigDir() & "rplg.ini")
+
+  for pkg in pkgList:
+    for package in getProject(pkg).packages:
+      let command = config.getSectionValue("Repos", package.repo)
+      if command != "":
+        let errC = execCmd(command & package.name)
+        break
+
+
 import cligen
 dispatchMulti([project, help = { "pkgList": "List of packages", }],
-              [search]
+              [search],
+              [install]
               )
