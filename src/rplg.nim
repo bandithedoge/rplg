@@ -72,9 +72,6 @@ proc install(pkgList: seq[string]): void =
         let errC = execCmd(conf_repos[package.repo] & " " & package.name)
         break
 
-    
-
-
 import cligen
 dispatchMulti([project, help = { "pkgList": "List of packages", }],
               [search],
