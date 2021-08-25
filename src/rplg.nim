@@ -73,7 +73,8 @@ proc install(pkgList: seq[string]): void =
         break
 
 import cligen
-dispatchMulti([project, help = { "pkgList": "List of packages", }],
-              [search],
-              [install]
+const pkg_list_help = { "pkgList": "package" }.toTable()
+dispatchMulti([project, help = pkg_list_help, doc = "View information for project"],
+              [search, help = pkg_list_help, doc = "Search for a project"],
+              [install, help = pkg_list_help, doc = "Install a package"]
               )
