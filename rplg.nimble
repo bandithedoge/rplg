@@ -11,6 +11,8 @@ binDir        = "bin"
 requires "nim >= 1.4.8"
 requires "puppy"
 requires "cligen"
+requires "parsetoml"
+requires "climenu"
 
 # Tasks
 task build, "Development build":

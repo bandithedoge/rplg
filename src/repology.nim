@@ -15,6 +15,10 @@ type Project* = object
   name*: string
   version*: string
 
+type Repo* = object
+  name*: string
+  command*: string
+
 const api = "https://repology.org/api/v1"
 var apiString: string
 

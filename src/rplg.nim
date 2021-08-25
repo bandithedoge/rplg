@@ -1,4 +1,4 @@
-import repology, strformat, strutils, terminal, os, osproc
+import repology, strformat, strutils, terminal, os, osproc, re, tables
 
 
 proc project(pkgList: seq[string]): void =
@@ -55,17 +55,24 @@ proc search(pkgList: seq[string]): void =
       stdout.write(project.packages.len())
       stdout.write("\n")
 
-import parsecfg
+import parsetoml
 
 proc install(pkgList: seq[string]): void =
-  let config = loadConfig(os.getConfigDir() & "rplg.ini")
-
+  let config = parseFile(os.getConfigDir() & "rplg.toml")
   for pkg in pkgList:
+
+    var conf_repos = newOrderedTable[string, string]()
     for package in getProject(pkg).packages:
-      let command = config.getSectionValue("Repos", package.repo)
-      if command != "":
-        let errC = execCmd(command & package.name)
+      for repo_conf in getElems(config["repos"]):
+        for str in getElems(repo_conf["name"]):
+          if match(package.repo, re(getStr(str))):
+            conf_repos[package.repo] = getStr(repo_conf["command"])
+
+      if conf_repos.hasKey(package.repo):
+        let errC = execCmd(conf_repos[package.repo] & " " & package.name)
         break
+
+    
 
 
 import cligen
