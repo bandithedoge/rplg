@@ -20,9 +20,12 @@ Run "rplg help" to get *comprehensive* help.
 # Installation
 
 ```sh
-git clone https://github.com/bandithedoge/rplg
-cd rplg
-nimble install
+nimble install https://github.com/bandithedoge/rplg
+```
+
+```sh
+# soon! :)
+rplg install rplg
 ```
 
 # Configuration
