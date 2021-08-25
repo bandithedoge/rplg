@@ -39,8 +39,10 @@ proc parseProject(arg: JsonNode): Project =
 
     if package{"srcname"} != nil:
       packageResponse.name = getStr(package["srcname"])
-    else:
+    elif package{"name"} != nil:
       packageResponse.name = getStr(package["name"])
+    else:
+      packageResponse.name = getStr(package["binname"])
 
     case packageResponse.repo
     of "winget":
