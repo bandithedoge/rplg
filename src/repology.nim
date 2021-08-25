@@ -37,10 +37,10 @@ proc parseProject(arg: JsonNode): Project =
     packageResponse.status = parseEnum[Status]getStr(package["status"])
     packageResponse.subrepo = getStr(package{"subrepo"})
 
-    if package{"srcname"} != nil:
-      packageResponse.name = getStr(package["srcname"])
-    else:
-      packageResponse.name = getStr(package["name"])
+    try:
+      packageResponse.name = getStr(package{"srcname"})
+    except:
+      packageResponse.name = getStr(package{"name"})
 
     case packageResponse.repo
     of "winget":

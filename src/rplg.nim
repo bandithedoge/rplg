@@ -1,4 +1,4 @@
-import repology, strformat, strutils, terminal, os, osproc, re, tables
+import repology, strformat, strutils, terminal, os, osproc, re
 
 
 proc project(pkgList: seq[string]): void =
@@ -55,7 +55,7 @@ proc search(pkgList: seq[string]): void =
       stdout.write(project.packages.len())
       stdout.write("\n")
 
-import parsetoml
+import parsetoml, tables
 
 proc install(pkgList: seq[string]): void =
   let config = parseFile(os.getConfigDir() & "rplg.toml")
