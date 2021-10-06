@@ -60,6 +60,7 @@ import parsetoml
 proc install(pkgList: seq[string]): void =
   let config = parseFile(os.getConfigDir() & "rplg.toml")
   for pkg in pkgList:
+    var repoExists: bool
 
     var conf_repos = newOrderedTable[string, string]()
     for package in getProject(pkg).packages:
@@ -69,8 +70,18 @@ proc install(pkgList: seq[string]): void =
             conf_repos[package.repo] = getStr(repo_conf["command"])
 
       if conf_repos.hasKey(package.repo):
-        let errC = execCmd(conf_repos[package.repo] & " " & package.name)
+        let cmd = execShellCmd(conf_repos[package.repo] & " " & package.name)
+        if cmd == 0:
+          stdout.styledWrite(fgGreen, &"Package \"{pkg}\" installed\n")
+          repoExists = true
+        else:
+          stdout.styledWrite(fgRed, &"Package \"{pkg}\" not installed\n")
         break
+      else:
+        repoExists = false
+
+    if repoExists == false:
+      stdout.styledWrite(fgRed, &"No configured repository for package \"{pkg}\" found\n")
 
 import cligen
 const pkg_list_help = { "pkgList": "package" }.toTable()

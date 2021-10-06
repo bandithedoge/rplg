@@ -14,8 +14,5 @@ requires "cligen"
 requires "parsetoml"
 
 # Tasks
-task debug, "Development build":
-    exec "nim c src/rplg.nim"
-
 task release, "Release build":
     exec "nim -d:release c src/rplg.nim"
