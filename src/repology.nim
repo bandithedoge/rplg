@@ -1,4 +1,4 @@
-import puppy, json, strformat, strutils
+import harpoon, json, strformat, strutils, std/uri
 
 type Status* = enum
   newest, devel, unique, outdated, legacy, rolling, noscheme, incorrect, untrusted, ignored, vulnerable
@@ -24,12 +24,12 @@ var apiString: string
 
 proc getApi(arg1: string, arg2: string): JsonNode =
   apiString = &"{api}/{arg1}/{arg2}"
-  return parseJson(fetch(apiString))
+  return parseJson(getContent(parseUri(apiString)))
 
 proc parseProject(arg: JsonNode): Project =
   var packageResponseFinal: Project
 
-  for package in arg:
+  for package in getElems(arg):
     var packageResponse: Package
 
     packageResponse.repo = getStr(package["repo"])

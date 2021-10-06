@@ -9,14 +9,13 @@ binDir        = "bin"
 
 # Dependencies
 requires "nim >= 1.4.8"
-requires "puppy"
+requires "harpoon"
 requires "cligen"
 requires "parsetoml"
-requires "climenu"
 
 # Tasks
-task build, "Development build":
-    exec "nim -o:bin/rplg c src/rplg.nim"
+task debug, "Development build":
+    exec "nim c src/rplg.nim"
 
 task release, "Release build":
-    exec "nim -o:bin/rplg -d:release c src/rplg.nim"
+    exec "nim -d:release c src/rplg.nim"
