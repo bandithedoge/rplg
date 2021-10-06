@@ -70,6 +70,7 @@ proc install(pkgList: seq[string]): void =
             conf_repos[package.repo] = getStr(repo_conf["command"])
 
       if conf_repos.hasKey(package.repo):
+        stdout.styledWrite(&"Executing command \"{conf_repos[package.repo]} {package.name}\"\n")
         let cmd = execShellCmd(conf_repos[package.repo] & " " & package.name)
         if cmd == 0:
           stdout.styledWrite(fgGreen, &"Package \"{pkg}\" installed\n")
